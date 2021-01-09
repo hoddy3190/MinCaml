@@ -1,0 +1,11 @@
+opam-version: "2.0"
+maintainer: "hoddy3190"
+authors: "hoddy3190"
+homepage: "https://github.com/hoddy3190/MinCaml"
+bug-reports: "https://github.com/hoddy3190/MinCaml/issues"
+depends: [
+    "dune" {= "2.7.1"}
+    "merlin"
+    "ocamlformat"
+]
+synopsis: "A compiler for https://github.com/esumii/min-caml"
