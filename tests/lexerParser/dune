@@ -1,0 +1,4 @@
+(executable
+  (name test_lexerParser)
+  (libraries lexer_parser ounit2)
+  (promote (until-clean)))
