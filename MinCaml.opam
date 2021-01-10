@@ -7,5 +7,6 @@ depends: [
     "dune" {= "2.7.1"}
     "merlin"
     "ocamlformat"
+    "ounit2" {= "2.2.4"}
 ]
 synopsis: "A compiler for https://github.com/esumii/min-caml"
