@@ -12,6 +12,6 @@
     (chdir %{workspace_root}
     (run %{bin:ocamlyacc} %{deps}))))
 
-(executable
-  (name calc)
-  (promote (until-clean)))
+(library
+  (name lexer_parser)
+  (wrapped false))
