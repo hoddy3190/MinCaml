@@ -22,6 +22,22 @@ let suite = "parse string" >::: [
         "1\n"
         (Int 1);
 
+    "[float]1.23" >:: test
+        "1.23\n"
+        (Float 1.23);
+
+    "[float]12." >:: test
+        "12.\n"
+        (Float 12.);
+
+    "[float]12e03" >:: test
+        "12e03\n"
+        (Float 12e03);
+
+    "[float]12.3E-45" >:: test
+        "12.3E-45\n"
+        (Float 12.3E-45);
+
     "加減乗除の優先度は乗除>加減" >:: test
         "1 - 3 - 6 / 3 * 4 + 2 * 3\n"
         (Add (

@@ -4,7 +4,7 @@
 
 %token <int> INT
 /* %token <bool> BOOL */
-/* %token <float> FLOAT */
+%token <float> FLOAT
 /* %token NOT  */
 %token PLUS MINUS TIMES DIV
 /* %token IF THEN ELSE */
@@ -34,6 +34,8 @@ main:
 expr:
     | INT
         { Int($1) }
+    | FLOAT
+        { Float($1) }
     | expr PLUS expr
         { Add($1, $3) }
     | expr MINUS expr

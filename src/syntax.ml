@@ -2,7 +2,7 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   (* | Unit
   | Bool of bool *)
   | Int of int
-  (* | Float of float *)
+  | Float of float
   (* | Not of t *)
   (* | Neg of t *)
   | Add of t * t

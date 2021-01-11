@@ -14,6 +14,7 @@ rule token = parse
 | eol          { EOL }
 | space+       { token lexbuf }
 | digit+       { INT(int_of_string (Lexing.lexeme lexbuf)) }
+| digit+ ('.' digit*)? (['e' 'E'] ['+' '-']? digit+)?  { FLOAT(float_of_string (Lexing.lexeme lexbuf))}
 | "+"          { PLUS }
 | "-"          { MINUS }
 | "*"          { TIMES }
