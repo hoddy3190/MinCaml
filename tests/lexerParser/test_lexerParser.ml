@@ -35,6 +35,22 @@ let suite = "parse string" >::: [
             Mul (
                 Int 2, Int 3)));
 
+    "等式" >:: test
+        "1 + 55 = 8 * 7\n"
+        (Eq (
+            Add (
+                Int 1, Int 55),
+            Mul (
+                Int 8, Int 7)));
+
+    "不等式" >:: test
+        "1 + 2 <= 9 / 2\n"
+        (Le (
+            Add (
+                Int 1, Int 2),
+            Div (
+                Int 9, Int 2)));
+
 ]
 
 let () = run_test_tt_main suite

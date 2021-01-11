@@ -20,6 +20,7 @@
 
 /* %token MINUS_DOT PLUS_DOT AST_DOT SLASH_DOT 謎 */
 
+%left EQ LT GT LE GE
 %left PLUS MINUS
 %left TIMES DIV
 
