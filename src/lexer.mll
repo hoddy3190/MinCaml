@@ -27,6 +27,7 @@ rule token = parse
 | "*."         { FTIMES }
 | "/."         { FDIV }
 | "="          { EQ }
+| "<>"         { NEQ }
 | "<="         { LE }
 | ">="         { GE }
 | "<"          { LT }

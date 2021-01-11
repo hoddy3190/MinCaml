@@ -10,7 +10,7 @@
 %token FPLUS FMINUS FTIMES FDIV
 /* %token IF THEN ELSE */
 /* %token LET REC IN */
-%token EQ LT GT LE GE
+%token EQ NEQ LT GT LE GE
 /* %token LPAREN RPAREN */
 %token EOL
 /* %token ARR_CREATE */
@@ -19,7 +19,7 @@
 /* %token SEMICOLON */
 /* %token COMMA */
 
-%left EQ LT GT LE GE
+%left EQ NEQ LT GT LE GE
 %left PLUS MINUS FPLUS FMINUS
 %left TIMES DIV FTIMES FDIV
 
@@ -57,6 +57,8 @@ expr:
         { FDiv($1, $3) }
     | expr EQ expr
         { Eq($1, $3) }
+    | expr NEQ expr
+        { Neq($1, $3) }
     | expr LT expr
         { Lt($1, $3) }
     | expr GT expr

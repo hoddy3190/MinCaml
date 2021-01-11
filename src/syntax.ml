@@ -15,6 +15,7 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | FMul of t * t
   | FDiv of t * t
   | Eq of t * t
+  | Neq of t * t
   | Le of t * t
   | Ge of t * t
   | Lt of t * t

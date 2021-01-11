@@ -79,6 +79,14 @@ let suite = "parse string" >::: [
             Mul (
                 Int 8, Int 7)));
 
+    "等式の否定" >:: test
+        "1 + 55 <> 8 * 7\n"
+        (Neq (
+            Add (
+                Int 1, Int 55),
+            Mul (
+                Int 8, Int 7)));
+
     "不等式" >:: test
         "1 + 2 <= 9 / 2\n"
         (Le (
