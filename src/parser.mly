@@ -2,6 +2,7 @@
   open Syntax
 %}
 
+%token <string> IDENT
 %token <int> INT
 %token <float> FLOAT
 %token <bool> BOOL
@@ -9,7 +10,7 @@
 %token PLUS MINUS TIMES DIV
 %token FPLUS FMINUS FTIMES FDIV
 %token IF THEN ELSE
-/* %token LET REC IN */
+%token LET IN
 %token EQ NEQ LT GT LE GE
 /* %token LPAREN RPAREN */
 %token EOL
@@ -30,7 +31,14 @@
 main:
     | expr EOL
         { $1 }
+
+var:
+    | IDENT
+        { Ident($1) }
+
 expr:
+    | var
+        { $1 }
     | INT
         { Int($1) }
     | FLOAT
@@ -69,3 +77,5 @@ expr:
         { Ge($1, $3) }
     | IF expr THEN expr ELSE expr
         { If($2, $4, $6) }
+    | LET var EQ expr IN expr
+        { Let($2, $4, $6) }

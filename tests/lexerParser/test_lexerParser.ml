@@ -103,6 +103,11 @@ let suite = "parse string" >::: [
             Int 4,
             Int 5));
 
+    "Let文" >:: test
+        "let a = 1 in a\n"
+        (Let (
+            Ident "a", Int 1, Ident "a"));
+
 ]
 
 let () = run_test_tt_main suite

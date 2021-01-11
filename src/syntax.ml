@@ -1,5 +1,6 @@
 type t = (* MinCamlの構文を表現するデータ型 *)
   (* | Unit  *)
+  | Ident of string
   | Int of int
   | Float of float
   | Bool of bool
@@ -21,10 +22,9 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | Lt of t * t
   | Gt of t * t
   | If of t * t * t
+  | Let of t * t * t
 [@@deriving show]
   (*
-  | Let of (Id.t * Type.t) * t * t
-  | Var of Id.t
   | LetRec of fundef * t
   | App of t * t list
   | Tuple of t list
