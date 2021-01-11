@@ -38,6 +38,10 @@ let suite = "parse string" >::: [
         "12.3E-45\n"
         (Float 12.3E-45);
 
+    "[bool]true" >:: test
+        "true\n"
+        (Bool true);
+
     "加減乗除の優先度は乗除>加減" >:: test
         "1 - 3 - 6 / 3 * 4 + 2 * 3\n"
         (Add (

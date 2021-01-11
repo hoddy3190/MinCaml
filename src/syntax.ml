@@ -1,8 +1,8 @@
 type t = (* MinCamlの構文を表現するデータ型 *)
-  (* | Unit
-  | Bool of bool *)
+  (* | Unit  *)
   | Int of int
   | Float of float
+  | Bool of bool
   (* | Not of t *)
   (* | Neg of t *)
   | Add of t * t

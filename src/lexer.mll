@@ -15,6 +15,8 @@ rule token = parse
 | space+       { token lexbuf }
 | digit+       { INT(int_of_string (Lexing.lexeme lexbuf)) }
 | digit+ ('.' digit*)? (['e' 'E'] ['+' '-']? digit+)?  { FLOAT(float_of_string (Lexing.lexeme lexbuf))}
+| "true"       { BOOL(true) }
+| "false"      { BOOL(false) }
 | "+"          { PLUS }
 | "-"          { MINUS }
 | "*"          { TIMES }
