@@ -39,6 +39,7 @@ rule token = parse
 | "then"       { THEN }
 | "else"       { ELSE }
 | "let"        { LET }
+| "rec"        { REC }
 | "in"         { IN }
 (* trueやifにもマッチするので他のregexよりも後に書く *)
 | ident        { IDENT(Lexing.lexeme lexbuf) }

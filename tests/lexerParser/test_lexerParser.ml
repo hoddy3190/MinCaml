@@ -108,6 +108,15 @@ let suite = "parse string" >::: [
         (Let (
             Ident "a", Int 1, Ident "a"));
 
+    "Let Rec文" >:: test
+        "let rec a b c = b + c in a\n"
+        (LetRec (
+            Ident "a",
+            [ Ident "b"; Ident "c" ],
+            Add (
+                Ident "b", Ident "c"),
+            Ident "a"));
+
 ]
 
 let () = run_test_tt_main suite

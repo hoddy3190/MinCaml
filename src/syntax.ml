@@ -23,6 +23,7 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | Gt of t * t
   | If of t * t * t
   | Let of t * t * t
+  | LetRec of t * (t list) * t * t
 [@@deriving show]
   (*
   | LetRec of fundef * t

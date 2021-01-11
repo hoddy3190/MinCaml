@@ -10,7 +10,7 @@
 %token PLUS MINUS TIMES DIV
 %token FPLUS FMINUS FTIMES FDIV
 %token IF THEN ELSE
-%token LET IN
+%token LET REC IN
 %token EQ NEQ LT GT LE GE
 /* %token LPAREN RPAREN */
 %token EOL
@@ -35,6 +35,12 @@ main:
 var:
     | IDENT
         { Ident($1) }
+
+params:
+    | var params
+        { $1 :: $2 }
+    | var
+        { [$1] }
 
 expr:
     | var
@@ -79,3 +85,5 @@ expr:
         { If($2, $4, $6) }
     | LET var EQ expr IN expr
         { Let($2, $4, $6) }
+    | LET REC var params EQ expr IN expr
+        { LetRec($3, $4, $6, $8) }
