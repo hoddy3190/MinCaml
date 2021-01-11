@@ -32,3 +32,6 @@ rule token = parse
 | ">="         { GE }
 | "<"          { LT }
 | ">"          { GT }
+| "if"         { IF }
+| "then"       { THEN }
+| "else"       { ELSE }

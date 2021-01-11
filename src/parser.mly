@@ -8,7 +8,7 @@
 %token NOT
 %token PLUS MINUS TIMES DIV
 %token FPLUS FMINUS FTIMES FDIV
-/* %token IF THEN ELSE */
+%token IF THEN ELSE
 /* %token LET REC IN */
 %token EQ NEQ LT GT LE GE
 /* %token LPAREN RPAREN */
@@ -67,3 +67,5 @@ expr:
         { Le($1, $3) }
     | expr GE expr
         { Ge($1, $3) }
+    | IF expr THEN expr ELSE expr
+        { If($2, $4, $6) }

@@ -95,6 +95,14 @@ let suite = "parse string" >::: [
             Div (
                 Int 9, Int 2)));
 
+    "If文" >:: test
+        "if 1 > 9 then 4 else 5\n"
+        (If (
+            Gt (
+                Int 1, Int 9),
+            Int 4,
+            Int 5));
+
 ]
 
 let () = run_test_tt_main suite
