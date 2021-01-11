@@ -17,6 +17,7 @@ rule token = parse
 | digit+ ('.' digit*)? (['e' 'E'] ['+' '-']? digit+)?  { FLOAT(float_of_string (Lexing.lexeme lexbuf))}
 | "true"       { BOOL(true) }
 | "false"      { BOOL(false) }
+| "not"        { NOT }
 | "+"          { PLUS }
 | "-"          { MINUS }
 | "*"          { TIMES }

@@ -3,7 +3,7 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | Int of int
   | Float of float
   | Bool of bool
-  (* | Not of t *)
+  | Not of t
   (* | Neg of t *)
   | Add of t * t
   | Sub of t * t

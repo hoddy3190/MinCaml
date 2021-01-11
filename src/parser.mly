@@ -5,7 +5,7 @@
 %token <int> INT
 %token <float> FLOAT
 %token <bool> BOOL
-/* %token NOT  */
+%token NOT
 %token PLUS MINUS TIMES DIV
 /* %token IF THEN ELSE */
 /* %token LET REC IN */
@@ -38,6 +38,8 @@ expr:
         { Float($1) }
     | BOOL
         { Bool($1) }
+    | NOT expr
+        { Not($2) }
     | expr PLUS expr
         { Add($1, $3) }
     | expr MINUS expr

@@ -42,6 +42,12 @@ let suite = "parse string" >::: [
         "true\n"
         (Bool true);
 
+    "[not]" >:: test
+        "not 1 = 1\n"
+        (Not (
+            Eq (
+                Int 1, Int 1)));
+
     "加減乗除の優先度は乗除>加減" >:: test
         "1 - 3 - 6 / 3 * 4 + 2 * 3\n"
         (Add (
