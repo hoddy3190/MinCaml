@@ -7,6 +7,7 @@
 %token <bool> BOOL
 %token NOT
 %token PLUS MINUS TIMES DIV
+%token FPLUS FMINUS FTIMES FDIV
 /* %token IF THEN ELSE */
 /* %token LET REC IN */
 %token EQ LT GT LE GE
@@ -18,11 +19,9 @@
 /* %token SEMICOLON */
 /* %token COMMA */
 
-/* %token MINUS_DOT PLUS_DOT AST_DOT SLASH_DOT 謎 */
-
 %left EQ LT GT LE GE
-%left PLUS MINUS
-%left TIMES DIV
+%left PLUS MINUS FPLUS FMINUS
+%left TIMES DIV FTIMES FDIV
 
 %start main
 %type <Syntax.t> main
@@ -48,6 +47,14 @@ expr:
         { Mul($1, $3) }
     | expr DIV expr
         { Div($1, $3) }
+    | expr FPLUS expr
+        { FAdd($1, $3) }
+    | expr FMINUS expr
+        { FSub($1, $3) }
+    | expr FTIMES expr
+        { FMul($1, $3) }
+    | expr FDIV expr
+        { FDiv($1, $3) }
     | expr EQ expr
         { Eq($1, $3) }
     | expr LT expr

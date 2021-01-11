@@ -61,6 +61,16 @@ let suite = "parse string" >::: [
             Mul (
                 Int 2, Int 3)));
 
+    "浮動小数点加減乗除" >:: test
+        "1.0 +. 0.0 -. 4.1 /. 5.3 *. 6.7\n"
+        (FSub (
+            FAdd (
+                Float 1.0, Float 0.0),
+            FMul (
+                FDiv (
+                    Float 4.1, Float 5.3),
+                Float 6.7)));
+
     "等式" >:: test
         "1 + 55 = 8 * 7\n"
         (Eq (

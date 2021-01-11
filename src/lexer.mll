@@ -22,6 +22,10 @@ rule token = parse
 | "-"          { MINUS }
 | "*"          { TIMES }
 | "/"          { DIV }
+| "+."         { FPLUS }
+| "-."         { FMINUS }
+| "*."         { FTIMES }
+| "/."         { FDIV }
 | "="          { EQ }
 | "<="         { LE }
 | ">="         { GE }

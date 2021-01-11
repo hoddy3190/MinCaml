@@ -10,10 +10,10 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | Mul of t * t
   | Div of t * t
   (* | FNeg of t *)
-  (* | FAdd of t * t
+  | FAdd of t * t
   | FSub of t * t
   | FMul of t * t
-  | FDiv of t * t *)
+  | FDiv of t * t
   | Eq of t * t
   | Le of t * t
   | Ge of t * t
