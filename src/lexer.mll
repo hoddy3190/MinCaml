@@ -7,10 +7,12 @@
 }
 
 let eol = ['\n']
+let space = [' ' '\t' '\n' '\r']
 let digit = ['0'-'9']
 
 rule token = parse
 | eol          { EOL }
+| space+       { token lexbuf }
 | digit+       { INT(int_of_string (Lexing.lexeme lexbuf)) }
 | "+"          { PLUS }
 | "-"          { MINUS }

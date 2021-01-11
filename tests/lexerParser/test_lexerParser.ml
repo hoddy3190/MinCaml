@@ -22,6 +22,19 @@ let suite = "parse string" >::: [
         "1\n"
         (Int 1);
 
+    "加減乗除の優先度は乗除>加減" >:: test
+        "1 - 3 - 6 / 3 * 4 + 2 * 3\n"
+        (Add (
+            Sub (
+                Sub (
+                    Int 1, Int 3),
+                Mul (
+                    Div (
+                        Int 6, Int 3),
+                    Int 4)),
+            Mul (
+                Int 2, Int 3)));
+
 ]
 
 let () = run_test_tt_main suite
