@@ -19,6 +19,7 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | Ge of t * t
   | Lt of t * t
   | Gt of t * t
+[@@deriving show]
   (* | If of t * t * t
   | Let of (Id.t * Type.t) * t * t
   | Var of Id.t

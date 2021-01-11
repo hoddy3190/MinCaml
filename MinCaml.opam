@@ -8,5 +8,6 @@ depends: [
     "merlin"
     "ocamlformat"
     "ounit2" {= "2.2.4"}
+    "ppx_deriving"
 ]
 synopsis: "A compiler for https://github.com/esumii/min-caml"
