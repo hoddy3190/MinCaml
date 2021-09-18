@@ -5,7 +5,7 @@ type t = (* MinCamlの構文を表現するデータ型 *)
   | Float of float
   | Bool of bool
   | Not of t
-  (* | Neg of t *)
+  | Neg of t
   | Add of t * t
   | Sub of t * t
   | Mul of t * t

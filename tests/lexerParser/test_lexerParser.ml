@@ -48,6 +48,15 @@ let suite = "parse string" >::: [
             Eq (
                 Int 1, Int 1)));
 
+    "[neg]-20" >:: test
+        "5 --20 + 3\n"
+        (Add (
+            Sub (
+                (Int 5),
+                (Neg (Int 20))
+            ),
+            (Int 3)));
+
     "加減乗除の優先度は乗除>加減" >:: test
         "1 - 3 - 6 / 3 * 4 + 2 * 3\n"
         (Add (

@@ -53,6 +53,8 @@ expr:
         { Bool($1) }
     | NOT expr
         { Not($2) }
+    | MINUS expr
+        { Neg($2) }
     | expr PLUS expr
         { Add($1, $3) }
     | expr MINUS expr
