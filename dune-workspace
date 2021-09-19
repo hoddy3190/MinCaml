@@ -1,0 +1,12 @@
+(lang dune 2.7)
+(profile release)
+(env
+ (release (flags
+  ; +a : すべてのwarningを有効化する
+  ; -  : warningを抑制する
+  ; @  : warningを有効化しさらにそれをfatal warningとして扱う
+  ;   8 Partial match: missing cases in pattern-matching.
+  ; see also: https://ocaml.org/manual/native.html
+  (:standard -w +a@8)
+ ))
+)
