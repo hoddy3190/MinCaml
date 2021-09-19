@@ -1,5 +1,12 @@
 open Syntax
 
+(* 型が合うように、型変数への代入をする *)
+(* TODO: こういうのunifyっていうの？ *)
+let rec unify expected_t actual_t =
+  match expected_t, actual_t with
+  | Type.Int, Type.Int -> ()
+
+
 (* env: 型環境（変数の名前から、その型への写像） *)
 let rec g env (expr:t) =
   match expr with
@@ -7,7 +14,7 @@ let rec g env (expr:t) =
   | Int _ -> Type.Int
   | Float _ -> Type.Float
   | Bool _ -> Type.Bool
-  | Not t -> D.unimplemented "Not"
+  | Not e -> unify Type.Bool (g env e); Type.Bool
   | Neg t -> D.unimplemented "Neg"
   | Add (t, t2) -> D.unimplemented "Add"
   | Sub (t, t2) -> D.unimplemented "Sub"
