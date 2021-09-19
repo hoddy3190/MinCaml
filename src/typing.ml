@@ -4,9 +4,9 @@ open Syntax
 let rec g env (expr:t) =
   match expr with
   | Ident string -> D.unimplemented "Ident"
-  | Int int -> D.unimplemented "Int"
-  | Float float -> D.unimplemented "Float"
-  | Bool bool -> D.unimplemented "Bool"
+  | Int _ -> Type.Int
+  | Float _ -> Type.Float
+  | Bool _ -> Type.Bool
   | Not t -> D.unimplemented "Not"
   | Neg t -> D.unimplemented "Neg"
   | Add (t, t2) -> D.unimplemented "Add"
