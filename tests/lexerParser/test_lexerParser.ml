@@ -12,6 +12,8 @@ let test input expected =
         assert_equal
             (* 改行がinputに含まれる可能性があるのでエスケープ *)
             ~msg: (sprintf "input: %S" input)
+            (* printerを設定することによって、テストが落ちたとき、「not equal」ではなく、「x is not equal to y」というメッセージが出るようになる
+               x, yを表示するためのprinterを設定する必要がある *)
             ~printer: [%derive.show: t]
             expected
             (parse input)
