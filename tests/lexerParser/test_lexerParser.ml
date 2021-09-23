@@ -126,6 +126,12 @@ let suite = "parse string" >::: [
                 Ident "b", Ident "c"),
             Ident "a"));
 
+    "関数適用" >:: test
+        "f 1 3 false\n"
+        (App (
+            Ident "f",
+            [ Int 1; Int 3; Bool false ]));
+
 ]
 
 let () = run_test_tt_main suite
