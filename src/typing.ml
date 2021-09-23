@@ -14,7 +14,8 @@ let rec occur t =
   | Type.Bool -> false
   | Type.Int -> false
   | Type.Float -> false
-  | Type.Fun (t_list, t) (* arguments are uncurried *) -> D.unimplemented "Fun"
+  | Type.Fun (t_list, t) (* arguments are uncurried *) ->
+    List.exists (fun t -> occur t) (t :: t_list)
   | Type.Tuple t_list -> D.unimplemented "Tuple"
   | Type.Array t -> D.unimplemented "Array"
   | Type.Var {contents = Some t'} -> occur t'
@@ -157,4 +158,7 @@ let rec g env (expr:t) =
     let inferred_e3_t = g updated_env e3 in
     unify e1_t inferred_e3_t;
     g updated_env e4
-  | App _ -> D.unimplemented "App"
+  | App (e1, e2) ->
+    let t = Type.gentyp () in (* e1の返り値の型 *)
+    unify (Type.Fun (List.map (g env) e2, t)) (g env e1);
+    t
