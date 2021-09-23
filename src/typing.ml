@@ -80,9 +80,39 @@ let rec g env (expr:t) =
   | Gt (t, t2) -> D.unimplemented "Gt"
   | If (t, t2, t3) -> D.unimplemented "If"
   | Let (e1, e2, e3) ->
+    (*
+      1. envにe1を追加 - お手本では3のあとに1をやっているが、LetRecと順番を揃えたほうがわかりやすいかなと思った
+      2. e2を型推論
+      3. e1の型変数に1の結果をunify
+      4. e3を型推論
+    *)
     let e1_t = Type.gentyp() in
-    unify e1_t (g env e2);
     let [@warning "-4"] var_name = match e1 with Ident s -> s | _ -> unexpected_type () in
     let updated_env = M.add var_name e1_t env in
+    unify e1_t (g updated_env e2);
     g updated_env e3;
-  | LetRec (t, t2, t3, t4) -> D.unimplemented "LetRec"
+  | LetRec (e1, e2, e3, e4) ->
+    (*
+      1. envにe1, e2を仮で追加 - e3にはe1,e2が含まれているので2に入る前にenvを更新する必要がある
+      2. e3を型推論 - envに追加したe1, e2が更新されるかもしれない
+      3. e1の型変数に3の結果をunify
+      4. e4を型推論
+    *)
+    let e1_t = Type.gentyp () in
+    let [@warning "-4"] var_name = match e1 with Ident s -> s | _ -> unexpected_type () in
+    let [@warning "-4"] e2_var_t_pair_list = List.map (
+      fun syntax_t ->
+        match syntax_t with
+        | Ident s -> (s, Type.gentyp ())
+        | _ -> unexpected_type () ) e2 in
+
+    let updated_env = M.add_list ((var_name, e1_t) :: e2_var_t_pair_list) env in
+    (*
+      e3にはe1やe2を含んだ式である。
+      e3を型推論する過程で、e1やe2も型推論される。
+      e1やe2はenvにはVar Noneの参照が登録されている。型推論の過程でunifyされるとVar Noneの参照先が別のなにかにすげ替わりうる。
+      envに登録してある型も同じところを参照しているため、すげ替わったらこちらも更新される
+    *)
+    let inferred_e3_t = g updated_env e3 in
+    unify e1_t inferred_e3_t;
+    g updated_env e4
