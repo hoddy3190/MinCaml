@@ -1,0 +1,5 @@
+(executable
+  (name test_typing)
+  (libraries lexer_parser ounit2)
+  (preprocess (pps ppx_deriving.show))
+  (promote (until-clean)))

@@ -13,5 +13,6 @@ type t = (* MinCamlの型を表現するデータ型 *)
       Var(ref (Some t)) : 型tだと推論された型変数
   *)
   | Var of t option ref
+[@@deriving show]
 
 let gentyp () = Var(ref None) (* 新しい型変数を作る *)
