@@ -46,6 +46,10 @@ let [@warning "-4"] rec unify t1 t2 =
     unify t1 t2'
   | _, Type.Var ({contents = None} as r2) ->                                        (* pattern 8 *)
     if occur r2 t1 then occur_check_error t1 t2 else r2 := Some t1
+  | Type.Fun (t_list1, t1), Type.Fun (t_list2, t2) ->
+    (* t_list1とt_list2の長さが違っていたら例外にしたいが、
+       iter2は'a listと'b listの長さが違うとエラーを出すのでそれですませる *)
+    List.iter2 (fun t1 t2 -> unify t1 t2) (t_list1 @ [t1]) (t_list2 @ [t2])
   | _ , _ ->                                                                        (* pattern 9 *)
     if t1 == t2 then () else not_equal_type t1 t2
 
