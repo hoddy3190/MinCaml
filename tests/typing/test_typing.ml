@@ -16,7 +16,7 @@ let test input (expected:Type.t) =
             expected
             (Typing.g M.empty (parse input))
 
-let suite = "parse string" >::: [
+let suite = "type inference" >::: [
 
     "Add" >:: test
         "1 + 1\n"
