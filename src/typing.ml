@@ -102,10 +102,18 @@ let rec g env (expr:t) =
   | Neq(e1, e2) ->
     unify (g env e1) (g env e2);
     Type.Bool
-  | Le (t, t2) -> D.unimplemented "Le"
-  | Ge (t, t2) -> D.unimplemented "Ge"
-  | Lt (t, t2) -> D.unimplemented "Lt"
-  | Gt (t, t2) -> D.unimplemented "Gt"
+  | Le (e1, e2) ->
+    unify (g env e1) (g env e2);
+    Type.Bool
+  | Ge (e1, e2) ->
+    unify (g env e1) (g env e2);
+    Type.Bool
+  | Lt (e1, e2) ->
+    unify (g env e1) (g env e2);
+    Type.Bool
+  | Gt (e1, e2) ->
+    unify (g env e1) (g env e2);
+    Type.Bool
   | If (t, t2, t3) -> D.unimplemented "If"
   | Let (e1, e2, e3) ->
     (*
