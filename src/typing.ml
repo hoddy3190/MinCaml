@@ -63,7 +63,7 @@ let rec g env (expr:t) =
   | Float _ -> Type.Float
   | Bool _ -> Type.Bool
   | Not e -> unify Type.Bool (g env e); Type.Bool
-  | Neg t -> D.unimplemented "Neg"
+  | Neg e -> unify Type.Int (g env e); Type.Int
   | Add (e1, e2) ->
     unify Type.Int (g env e1);
     unify Type.Int (g env e2);
