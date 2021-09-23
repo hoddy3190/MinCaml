@@ -157,3 +157,4 @@ let rec g env (expr:t) =
     let inferred_e3_t = g updated_env e3 in
     unify e1_t inferred_e3_t;
     g updated_env e4
+  | App _ -> D.unimplemented "App"

@@ -36,10 +36,30 @@ var:
     | IDENT
         { Ident($1) }
 
+/* 関数の仮引数
+   再帰的に定義することで、無限に続くvarを表す
+   var (var (var (var ...))) */
 params:
     | var params
         { $1 :: $2 }
     | var
+        { [$1] }
+
+arg:
+    | var
+        { $1 }
+    | INT
+        { Int($1) }
+    | BOOL
+        { Bool($1) }
+    | FLOAT
+        { Float($1) }
+
+/* 関数の実引数 */
+args:
+    | arg args
+        { $1 :: $2 }
+    | arg
         { [$1] }
 
 expr:
@@ -89,3 +109,7 @@ expr:
         { Let($2, $4, $6) }
     | LET REC var params EQ expr IN expr
         { LetRec($3, $4, $6, $8) }
+    /* varはIDENTにマッチして IDENT($1) を返す。$1にはIDENT($1)が入る
+       argsはarg, arg, arg,...にマッチする。返す値はテスト参照。 */
+    | var args
+        { App($1, $2) }
