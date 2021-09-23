@@ -64,14 +64,38 @@ let rec g env (expr:t) =
   | Bool _ -> Type.Bool
   | Not e -> unify Type.Bool (g env e); Type.Bool
   | Neg t -> D.unimplemented "Neg"
-  | Add (t, t2) -> D.unimplemented "Add"
-  | Sub (t, t2) -> D.unimplemented "Sub"
-  | Mul (t, t2) -> D.unimplemented "Mul"
-  | Div (t, t2) -> D.unimplemented "Div"
-  | FAdd (t, t2) -> D.unimplemented "FAdd"
-  | FSub (t, t2) -> D.unimplemented "FSub"
-  | FMul (t, t2) -> D.unimplemented "FMul"
-  | FDiv (t, t2) -> D.unimplemented "FDiv"
+  | Add (e1, e2) ->
+    unify Type.Int (g env e1);
+    unify Type.Int (g env e2);
+    Type.Int
+  | Sub (e1, e2) ->
+    unify Type.Int (g env e1);
+    unify Type.Int (g env e2);
+    Type.Int
+  | Mul (e1, e2) ->
+    unify Type.Int (g env e1);
+    unify Type.Int (g env e2);
+    Type.Int
+  | Div (e1, e2) ->
+    unify Type.Int (g env e1);
+    unify Type.Int (g env e2);
+    Type.Int
+  | FAdd (e1, e2) ->
+    unify Type.Float (g env e1);
+    unify Type.Float (g env e2);
+    Type.Float
+  | FSub (e1, e2) ->
+    unify Type.Float (g env e1);
+    unify Type.Float (g env e2);
+    Type.Float
+  | FMul (e1, e2) ->
+    unify Type.Float (g env e1);
+    unify Type.Float (g env e2);
+    Type.Float
+  | FDiv (e1, e2) ->
+    unify Type.Float (g env e1);
+    unify Type.Float (g env e2);
+    Type.Float
   | Eq (t, t2) -> D.unimplemented "Eq"
   | Neq (t, t2) -> D.unimplemented "Neq"
   | Le (t, t2) -> D.unimplemented "Le"
