@@ -58,7 +58,7 @@ let [@warning "-4"] rec unify t1 t2 =
 (* env: 型環境（変数の名前から、その型への写像） *)
 let rec g env (expr:t) =
   match expr with
-  | Ident string -> D.unimplemented "Ident"
+  | Ident s -> M.find s env
   | Int _ -> Type.Int
   | Float _ -> Type.Float
   | Bool _ -> Type.Bool
