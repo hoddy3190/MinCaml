@@ -26,7 +26,8 @@ let rec occur r t =
     pattern 6. Var None, 型変数でない型       -> occur_checkの後、型変数でない型を型変数に代入する
     pattern 7. 型変数でない型, Var (Some t)   -> Var (Some t)でなくなるまでtをたどっていき、型変数でない型といきついた型をt'をunifyする
     pattern 8. 型変数でない型, Var None       -> occur_checkの後、型変数でない型を型変数に代入する
-    pattern 9. 型変数でない型, 型変数でない型    -> 期待されている型と、実際の型が一致する場合はなにもしない。一致しない場合は例外
+    pattern 9. 型変数でない型, 型変数でない型    -> パラメつきでない型の場合、期待されている型と、実際の型が一致する場合はなにもしない。一致しない場合は例外
+                                              パラメつきの型の場合、それぞれのパラメからひとつずつとりだしunifyする
 *)
 let [@warning "-4"] rec unify t1 t2 =
   match t1, t2 with
@@ -46,10 +47,16 @@ let [@warning "-4"] rec unify t1 t2 =
     unify t1 t2'
   | _, Type.Var ({contents = None} as r2) ->                                        (* pattern 8 *)
     if occur r2 t1 then occur_check_error t1 t2 else r2 := Some t1
+  | Type.Unit, Type.Unit -> D.unimplemented "unify Unit"
+  | Type.Bool, Type.Bool -> ()
+  | Type.Int, Type.Int -> ()
+  | Type.Float, Type.Float -> ()
   | Type.Fun (t_list1, t1), Type.Fun (t_list2, t2) ->
     (* t_list1とt_list2の長さが違っていたら例外にしたいが、
        iter2は'a listと'b listの長さが違うとエラーを出すのでそれですませる *)
     List.iter2 (fun t1 t2 -> unify t1 t2) (t_list1 @ [t1]) (t_list2 @ [t2])
+  | Type.Tuple _, Type.Tuple _ -> D.unimplemented "unify Tuple"
+  | Type.Array _, Type.Array _ -> D.unimplemented "unify Array"
   | _ , _ ->                                                                        (* pattern 9 *)
     if t1 == t2 then () else not_equal_type t1 t2
 
