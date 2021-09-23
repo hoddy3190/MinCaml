@@ -22,6 +22,10 @@ let suite = "parse string" >::: [
         "1 + 1\n"
         (Type.Int);
 
+    "Let Rec関数" >:: test
+        "let rec fib n = if n <= 1 then n else let a = n - 2 in let b = n - 1 in fib a + fib b in fib 5\n"
+        (Type.Var (ref (Some Type.Int)));
+
 ]
 
 let () = run_test_tt_main suite
