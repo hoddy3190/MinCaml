@@ -29,9 +29,9 @@ and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 let g env expr =
   match expr with
   | Syntax.Ident s -> D.unimplemented "Ident"
-  | Syntax.Int _ -> D.unimplemented "Int"
-  | Syntax.Float _ -> D.unimplemented "Float"
-  | Syntax.Bool _ -> D.unimplemented "Bool"
+  | Syntax.Int i -> Int i, Type.Int
+  | Syntax.Float f -> Float f, Type.Float
+  | Syntax.Bool b -> D.unimplemented "Bool"
   | Syntax.Not e -> D.unimplemented "Not"
   | Syntax.Neg e -> D.unimplemented "Neg"
   | Syntax.Add (e1, e2) -> D.unimplemented "Add"
