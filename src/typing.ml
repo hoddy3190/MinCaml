@@ -96,8 +96,12 @@ let rec g env (expr:t) =
     unify Type.Float (g env e1);
     unify Type.Float (g env e2);
     Type.Float
-  | Eq (t, t2) -> D.unimplemented "Eq"
-  | Neq (t, t2) -> D.unimplemented "Neq"
+  | Eq (e1, e2) ->
+    unify (g env e1) (g env e2);
+    Type.Bool
+  | Neq(e1, e2) ->
+    unify (g env e1) (g env e2);
+    Type.Bool
   | Le (t, t2) -> D.unimplemented "Le"
   | Ge (t, t2) -> D.unimplemented "Ge"
   | Lt (t, t2) -> D.unimplemented "Lt"
