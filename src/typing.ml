@@ -114,7 +114,12 @@ let rec g env (expr:t) =
   | Gt (e1, e2) ->
     unify (g env e1) (g env e2);
     Type.Bool
-  | If (t, t2, t3) -> D.unimplemented "If"
+  | If (e1, e2, e3) ->
+    let inferred_e1_t = g env e1 in
+    unify Type.Bool inferred_e1_t;
+    let inferred_e2_t = g env e2 in
+    unify (g env e2) (g env e3);
+    inferred_e2_t (* e3でもよい *)
   | Let (e1, e2, e3) ->
     (*
       1. envにe1を追加 - お手本では3のあとに1をやっているが、LetRecと順番を揃えたほうがわかりやすいかなと思った
