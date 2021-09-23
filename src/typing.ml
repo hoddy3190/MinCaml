@@ -162,7 +162,7 @@ let rec g env (expr:t) =
       envに登録してある型も同じところを参照しているため、すげ替わったらこちらも更新される
     *)
     let inferred_e3_t = g updated_env e3 in
-    unify e1_t inferred_e3_t;
+    unify e1_t (Type.Fun ((List.map snd e2_var_t_pair_list), inferred_e3_t));
     g updated_env e4
   | App (e1, e2) ->
     let t = Type.gentyp () in (* e1の返り値の型 *)
