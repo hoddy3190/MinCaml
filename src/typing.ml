@@ -2,18 +2,19 @@ open Syntax
 open Err
 
 (* 未定義の型変数が入っていないことをチェックする *)
-let rec occur t =
+let rec occur r t =
   match t with
   | Type.Unit -> D.unimplemented "Unit"
   | Type.Bool -> false
   | Type.Int -> false
   | Type.Float -> false
   | Type.Fun (t_list, t) (* arguments are uncurried *) ->
-    List.exists (fun t -> occur t) (t :: t_list)
+    List.exists (fun t -> occur r t) (t :: t_list)
   | Type.Tuple t_list -> D.unimplemented "Tuple"
   | Type.Array t -> D.unimplemented "Array"
-  | Type.Var {contents = Some t'} -> occur t'
-  | Type.Var {contents = None} -> true
+  | Type.Var r1 when r == r1 -> true (* 同じ参照（指す型変数が同じ）だったらtrueにする *)
+  | Type.Var {contents = Some t'} -> occur r t'
+  | Type.Var {contents = None} -> false (* 同じ{contents = None}でも違う参照ならfalseにする *)
 
 (*  次のロジックにしたがって、型変数Var Noneへの代入をする
     validationも兼ねているので、t1とt2が両方型変数でなく、かつt1とt2の型が一致しない場合は例外をはく
@@ -40,11 +41,11 @@ let [@warning "-4"] rec unify t1 t2 =
   | Type.Var {contents = None}, Type.Var {contents = None} ->                       (* pattern 5 *)
     ()
   | Type.Var ({contents = None} as r1), _ ->                                        (* pattern 6 *)
-    if occur t2 then occur_check_error t1 t2 else r1 := Some t2
+    if occur r1 t2 then occur_check_error t1 t2 else r1 := Some t2
   | _, Type.Var {contents = Some t2'} ->                                            (* pattern 7 *)
     unify t1 t2'
   | _, Type.Var ({contents = None} as r2) ->                                        (* pattern 8 *)
-    if occur t1 then occur_check_error t1 t2 else r2 := Some t1
+    if occur r2 t1 then occur_check_error t1 t2 else r2 := Some t1
   | _ , _ ->                                                                        (* pattern 9 *)
     if t1 == t2 then () else not_equal_type t1 t2
 
