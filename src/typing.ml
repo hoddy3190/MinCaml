@@ -1,9 +1,6 @@
 open Syntax
 open Err
 
-exception OccurCheckError
-let occur_check_error () = raise OccurCheckError
-
 exception NotEqualType
 let not_equal_type () = raise NotEqualType
 
@@ -46,11 +43,11 @@ let [@warning "-4"] rec unify t1 t2 =
   | Type.Var {contents = None}, Type.Var {contents = None} ->                       (* pattern 5 *)
     ()
   | Type.Var ({contents = None} as r1), _ ->                                        (* pattern 6 *)
-    if occur t2 then occur_check_error () else r1 := Some t2
+    if occur t2 then occur_check_error t1 t2 else r1 := Some t2
   | _, Type.Var {contents = Some t2'} ->                                            (* pattern 7 *)
     unify t1 t2'
   | _, Type.Var ({contents = None} as r2) ->                                        (* pattern 8 *)
-    if occur t1 then occur_check_error () else r2 := Some t1
+    if occur t1 then occur_check_error t1 t2 else r2 := Some t1
   | _ , _ ->                                                                        (* pattern 9 *)
     if t1 == t2 then () else not_equal_type ()
 
