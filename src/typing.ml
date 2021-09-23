@@ -1,9 +1,6 @@
 open Syntax
 open Err
 
-exception NotEqualType
-let not_equal_type () = raise NotEqualType
-
 (* 未定義の型変数が入っていないことをチェックする *)
 let rec occur t =
   match t with
@@ -49,7 +46,7 @@ let [@warning "-4"] rec unify t1 t2 =
   | _, Type.Var ({contents = None} as r2) ->                                        (* pattern 8 *)
     if occur t1 then occur_check_error t1 t2 else r2 := Some t1
   | _ , _ ->                                                                        (* pattern 9 *)
-    if t1 == t2 then () else not_equal_type ()
+    if t1 == t2 then () else not_equal_type t1 t2
 
 
 (* 式exprの型を推論して返す *)
