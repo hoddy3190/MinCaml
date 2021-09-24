@@ -1,3 +1,4 @@
+open Err
 
 type t = (* K正規化後の式 *)
   | Unit
@@ -26,13 +27,17 @@ type t = (* K正規化後の式 *)
 and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
 (* 変数の型環境envとK正規化前の式とを受け取り、K正規化後の式とその型とを組にして返す *)
-let g env expr =
+let rec g env expr =
   match expr with
   | Syntax.Ident s -> D.unimplemented "Ident"
   | Syntax.Int i -> Int i, Type.Int
   | Syntax.Float f -> Float f, Type.Float
   | Syntax.Bool b -> Int (if b then 1 else 0), Type.Int (* K正規化のついで *)
-  | Syntax.Not e -> D.unimplemented "Not"
+  | Syntax.Not e -> g env (Syntax.If (e, Syntax.Bool false, Syntax.Bool true))
+    (* なぜこうじゃない？
+    let k_e, _ = g env e in
+    let [@warning "-4"] i = match k_e with Int i -> i | _ -> unexpected_expr () in
+    Int (if i = 1 then 0 else 1), Type.Int *)
   | Syntax.Neg e -> D.unimplemented "Neg"
   | Syntax.Add (e1, e2) -> D.unimplemented "Add"
   | Syntax.Sub (e1, e2) -> D.unimplemented "Sub"
