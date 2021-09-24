@@ -31,7 +31,7 @@ let g env expr =
   | Syntax.Ident s -> D.unimplemented "Ident"
   | Syntax.Int i -> Int i, Type.Int
   | Syntax.Float f -> Float f, Type.Float
-  | Syntax.Bool b -> D.unimplemented "Bool"
+  | Syntax.Bool b -> Int (if b then 1 else 0), Type.Int (* K正規化のついで *)
   | Syntax.Not e -> D.unimplemented "Not"
   | Syntax.Neg e -> D.unimplemented "Neg"
   | Syntax.Add (e1, e2) -> D.unimplemented "Add"
