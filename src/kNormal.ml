@@ -24,14 +24,42 @@ type t = (* K正規化後の式 *)
   | ExtFunApp of Id.t * Id.t list
 and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
+let insert_let (k_normal_e, t) k =
+    match k_normal_e with
+    | Var _ -> D.unimplemented "Var"
+    | Add (s1, s2) ->
+      let new_var_name = Id.gentmp t in
+      let e', t' = k new_var_name in
+      Let ((new_var_name, t), k_normal_e, e'), t'
+    | _ -> D.unimplemented "Other"
+
 let rec g env = function (* K正規化ルーチン本体 *)
   | Syntax.Ident s -> D.unimplemented "Ident"
-  | Syntax.Int _ -> D.unimplemented "Int"
+  | Syntax.Int i -> Int(i), Type.Int
   | Syntax.Float _ -> D.unimplemented "Float"
   | Syntax.Bool _ -> D.unimplemented "Bool"
   | Syntax.Not e -> D.unimplemented "Not"
   | Syntax.Neg e -> D.unimplemented "Neg"
-  | Syntax.Add (e1, e2) -> D.unimplemented "Add"
+  | Syntax.Add (e1, e2) ->
+    (*
+        Add (Add 1 2) (Add 3 4)
+        ->
+        let tmp1 = 1 + 2 in
+        let tmp2 = 3 + 4 in
+        tmp1 + tmp2
+
+        g env (Add (Int 1) (Int 2))
+        -> let t1: Type.Int = 1 in
+        -> let t2: Type.Int = 2 in
+        -> t1 + t2
+    *)
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            Add (var1, var2), Type.Int
+          )
+      )
   | Syntax.Sub (e1, e2) -> D.unimplemented "Sub"
   | Syntax.Mul (e1, e2) -> D.unimplemented "Mul"
   | Syntax.Div (e1, e2) -> D.unimplemented "Div"
