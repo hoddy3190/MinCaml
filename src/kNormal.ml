@@ -33,7 +33,8 @@ let insert_let (k_normal_e, t) k =
       Let ((new_var_name, t), k_normal_e, e'), t'
     | _ -> D.unimplemented "Other"
 
-let rec g env = function (* K正規化ルーチン本体 *)
+let rec g env e = (* K正規化ルーチン本体 *)
+  match e with
   | Syntax.Ident s -> D.unimplemented "Ident"
   | Syntax.Int i -> Int(i), Type.Int
   | Syntax.Float _ -> D.unimplemented "Float"
@@ -67,7 +68,17 @@ let rec g env = function (* K正規化ルーチン本体 *)
   | Syntax.FSub (e1, e2) -> D.unimplemented "FSub"
   | Syntax.FMul (e1, e2) -> D.unimplemented "FMul"
   | Syntax.FDiv (e1, e2) -> D.unimplemented "FDiv"
-  | Syntax.Eq (e1, e2) -> D.unimplemented "Eq"
+  | Syntax.Eq (e1, e2) ->
+    (* これはだめなの？
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            (IfEq (var1, var2, Int 1, Int 0)), Type.Bool
+          )
+      )
+    *)
+    g env (Syntax.If (e, Syntax.Bool true, Syntax.Bool false))
   | Syntax.Neq(e1, e2) -> D.unimplemented "Neq"
   | Syntax.Le (e1, e2) -> D.unimplemented "Le"
   | Syntax.Ge (e1, e2) -> D.unimplemented "Ge"
