@@ -80,11 +80,37 @@ let rec g env e = (* K正規化ルーチン本体 *)
     *)
     g env (Syntax.If (e, Syntax.Bool true, Syntax.Bool false))
   | Syntax.Neq(e1, e2) -> D.unimplemented "Neq"
-  | Syntax.Le (e1, e2) -> D.unimplemented "Le"
+  | Syntax.Le (e1, e2) ->
+    g env (Syntax.If (e, Syntax.Bool true, Syntax.Bool false))
   | Syntax.Ge (e1, e2) -> D.unimplemented "Ge"
   | Syntax.Lt (e1, e2) -> D.unimplemented "Lt"
-  | Syntax.Gt (e1, e2) -> D.unimplemented "Gt"
-  | Syntax.If (e1, e2, e3) -> D.unimplemented "If"
+  | Syntax.Gt (e1, e2) ->
+    g env (Syntax.Not (Syntax.Le (e1, e2)))
+  | Syntax.If (e1, e2, e3) ->
+    begin match e1 with
+    | Syntax.Eq (e1, e2) ->
+      insert_let (g env e1)
+        (fun var1 ->
+            insert_let (g env e2)
+            (fun var2 ->
+                let e2', t2' = g env e2 in
+                let e3', t3' = g env e3 in
+                (IfEq (var1, var2, e2', e3')), t2'
+            )
+        )
+    | Syntax.Le (e1, e2) ->
+      insert_let (g env e1)
+        (fun var1 ->
+            insert_let (g env e2)
+            (fun var2 ->
+                let e2', t2' = g env e2 in
+                let e3', t3' = g env e3 in
+                (IfLE (var1, var2, e2', e3')), t2'
+            )
+        )
+    (* 解答ではBool falseと比較していたけどなぜ？ *)
+    | _ -> g env (Syntax.If (Syntax.Eq (e1, Syntax.Bool true), e2, e3))
+    end
   | Syntax.Let (e1, e2, e3) -> D.unimplemented "Let"
   | Syntax.LetRec (e1, e2, e3, e4) -> D.unimplemented "LetRec"
   | Syntax.App (e1, e2) -> D.unimplemented "App"
