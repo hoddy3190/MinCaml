@@ -75,7 +75,17 @@ let rec g env expr =
   | Syntax.FSub (e1, e2) -> D.unimplemented "FSub"
   | Syntax.FMul (e1, e2) -> D.unimplemented "FMul"
   | Syntax.FDiv (e1, e2) -> D.unimplemented "FDiv"
-  | Syntax.Eq (e1, e2) -> D.unimplemented "Eq"
+  | Syntax.Eq (e1, e2) ->
+    (* これはだめなの？
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            (IfEq (var1, var2, Int 1, Int 0)), Type.Bool
+          )
+      )
+    *)
+    g env (Syntax.If (expr, Syntax.Bool true, Syntax.Bool false))
   | Syntax.Neq(e1, e2) -> D.unimplemented "Neq"
   | Syntax.Le (e1, e2) -> D.unimplemented "Le"
   | Syntax.Ge (e1, e2) -> D.unimplemented "Ge"
