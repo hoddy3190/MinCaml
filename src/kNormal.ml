@@ -47,7 +47,9 @@ let rec g env expr =
     let k_e, _ = g env e in
     let [@warning "-4"] i = match k_e with Int i -> i | _ -> unexpected_expr () in
     Int (if i = 1 then 0 else 1), Type.Int *)
-  | Syntax.Neg e -> D.unimplemented "Neg"
+  | Syntax.Neg e ->
+    insert_let (g env e)
+      (fun var -> Neg var, Type.Int)
   | Syntax.Add (e1, e2) ->
     (*
         Add (Add 1 2) (Add 3 4)
