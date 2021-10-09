@@ -75,13 +75,48 @@ let rec g env expr =
             Add (var1, var2), Type.Int
           )
       )
-  | Syntax.Sub (e1, e2) -> D.unimplemented "Sub"
+  | Syntax.Sub (e1, e2) ->
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            Sub (var1, var2), Type.Int
+          )
+      )
   | Syntax.Mul (e1, e2) -> D.unimplemented "Mul"
   | Syntax.Div (e1, e2) -> D.unimplemented "Div"
-  | Syntax.FAdd (e1, e2) -> D.unimplemented "FAdd"
-  | Syntax.FSub (e1, e2) -> D.unimplemented "FSub"
-  | Syntax.FMul (e1, e2) -> D.unimplemented "FMul"
-  | Syntax.FDiv (e1, e2) -> D.unimplemented "FDiv"
+  | Syntax.FAdd (e1, e2) ->
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            FAdd (var1, var2), Type.Float
+          )
+      )
+  | Syntax.FSub (e1, e2) ->
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            FSub (var1, var2), Type.Float
+          )
+      )
+  | Syntax.FMul (e1, e2) ->
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            FMul (var1, var2), Type.Float
+          )
+      )
+  | Syntax.FDiv (e1, e2) ->
+    insert_let (g env e1)
+      (fun var1 ->
+        insert_let (g env e2)
+          (fun var2 ->
+            FDiv (var1, var2), Type.Float
+          )
+      )
   | Syntax.Eq (e1, e2) ->
     (* これはだめなの？
     insert_let (g env e1)
