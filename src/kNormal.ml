@@ -102,7 +102,7 @@ let rec g env expr =
   | Syntax.Gt (e1, e2) ->
     g env (Syntax.Not (Syntax.Le (e1, e2)))
   | Syntax.If (e1, e2, e3) ->
-    begin match e1 with
+    begin [@warning "-4"] match e1 with
     | Syntax.Eq (e1, e2) ->
       insert_let (g env e1)
         (fun var1 ->
