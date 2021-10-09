@@ -121,6 +121,12 @@ let rec g env expr =
     (* 解答ではBool falseと比較していたけどなぜ？ *)
     | _ -> g env (Syntax.If (Syntax.Eq (e1, Syntax.Bool true), e2, e3))
     end
-  | Syntax.Let (e1, e2, e3) -> D.unimplemented "Let"
+  | Syntax.Let (e1, e2, e3) ->
+    let e2', _ = g env e2 in
+    let e1_t = Type.gentyp() in
+    let [@warning "-4"] var_name = match e1 with Syntax.Ident s -> s | _ -> unexpected_type () in
+    let updated_env = M.add var_name e1_t env in
+    let e3', t3' = g updated_env e3 in
+    Let ((var_name, e1_t), e2', e3'), t3'
   | Syntax.LetRec (e1, e2, e3, e4) -> D.unimplemented "LetRec"
   | Syntax.App (e1, e2) -> D.unimplemented "App"
