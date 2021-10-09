@@ -142,4 +142,17 @@ let rec g env expr =
     let updated_env_2 = M.add_list e2_var_t_pair_list updated_env_1 in
     let e3', _ = g updated_env_2 e3 in
     LetRec ({name = (var_name, e1_t); args = e2_var_t_pair_list; body = e3'}, e4'), t4'
-  | Syntax.App (e1, e2) -> D.unimplemented "App"
+  | Syntax.App (e1, e2s) ->
+    begin [@warning "-4"] match g env e1 with
+    | _, Type.Fun (_, t) as normalized_e1 ->
+      insert_let normalized_e1 (fun var ->
+        let rec bind xs e2s = (* "xs" are identifiers for the arguments *)
+            begin match e2s with
+            | [] -> App(var, xs), t
+            | e2 :: e2s ->
+                insert_let (g env e2) (fun e2_var -> bind (xs @ [e2_var]) e2s)
+            end
+        in
+        bind [] e2s) (* left-to-right evaluation *)
+    | _ -> unexpected_type ()
+    end
