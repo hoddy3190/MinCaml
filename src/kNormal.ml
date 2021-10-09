@@ -27,13 +27,14 @@ type t = (* K正規化後の式 *)
 and fundef = { name : Id.t * Type.t; args : (Id.t * Type.t) list; body : t }
 
 let insert_let (k_normal_e, t) k =
-    match k_normal_e with
-    | Var _ -> D.unimplemented "Var"
-    | Add (s1, s2) ->
+    begin [@warning "-4"] match k_normal_e with
+    (* Varだけ特別視する必要ある？ *)
+    | Var s -> k s
+    | _ ->
       let new_var_name = Id.gentmp t in
       let e', t' = k new_var_name in
       Let ((new_var_name, t), k_normal_e, e'), t'
-    | _ -> D.unimplemented "Other"
+    end
 
 (* 変数の型環境envとK正規化前の式とを受け取り、K正規化後の式とその型とを組にして返す *)
 let rec g env expr =
