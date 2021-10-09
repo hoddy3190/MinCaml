@@ -154,16 +154,18 @@ let rec g env (expr:t) =
         | Ident s -> (s, Type.gentyp ())
         | _ -> unexpected_type () ) e2 in
 
-    let updated_env = M.add_list ((var_name, e1_t) :: e2_var_t_pair_list) env in
+    let updated_env_1 = M.add var_name e1_t env in
+    let updated_env_2 = M.add_list e2_var_t_pair_list updated_env_1 in
     (*
       e3にはe1やe2を含んだ式である。
       e3を型推論する過程で、e1やe2も型推論される。
       e1やe2はenvにはVar Noneの参照が登録されている。型推論の過程でunifyされるとVar Noneの参照先が別のなにかにすげ替わりうる。
       envに登録してある型も同じところを参照しているため、すげ替わったらこちらも更新される
     *)
-    let inferred_e3_t = g updated_env e3 in
+    let inferred_e3_t = g updated_env_2 e3 in
     unify e1_t (Type.Fun ((List.map snd e2_var_t_pair_list), inferred_e3_t));
-    g updated_env e4
+    (* e4ではe2に含まれるローカル変数は使わない *)
+    g updated_env_1 e4
   | App (e1, e2) ->
     let t = Type.gentyp () in (* e1の返り値の型 *)
     unify (Type.Fun (List.map (g env) e2, t)) (g env e1);
