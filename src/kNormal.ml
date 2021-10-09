@@ -128,5 +128,18 @@ let rec g env expr =
     let updated_env = M.add var_name e1_t env in
     let e3', t3' = g updated_env e3 in
     Let ((var_name, e1_t), e2', e3'), t3'
-  | Syntax.LetRec (e1, e2, e3, e4) -> D.unimplemented "LetRec"
+  | Syntax.LetRec (e1, e2, e3, e4) ->
+    let e1_t = Type.gentyp () in
+    let [@warning "-4"] var_name = match e1 with Ident s -> s | _ -> unexpected_type () in
+    let [@warning "-4"] e2_var_t_pair_list = List.map (
+      fun syntax_t ->
+        match syntax_t with
+        | Syntax.Ident s -> (s, Type.gentyp ())
+        | _ -> unexpected_type () ) e2 in
+    let updated_env_1 = M.add var_name e1_t env in
+    (* e4ではe2に含まれるローカル変数は使わない *)
+    let e4', t4' = g updated_env_1 e4 in
+    let updated_env_2 = M.add_list e2_var_t_pair_list updated_env_1 in
+    let e3', _ = g updated_env_2 e3 in
+    LetRec ({name = (var_name, e1_t); args = e2_var_t_pair_list; body = e3'}, e4'), t4'
   | Syntax.App (e1, e2) -> D.unimplemented "App"
