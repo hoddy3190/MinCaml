@@ -83,7 +83,20 @@ let rec g env expr =
             Sub (var1, var2), Type.Int
           )
       )
-  | Syntax.Mul (e1, e2) -> D.unimplemented "Mul"
+  | Syntax.Mul (e1, e2) ->
+    (* TODO: テスト *)
+    begin [@warning "-4"] match g env e2 with
+    | Int i, _ ->
+      let replaced_syntax =
+        List.fold_left (fun e1 acc ->
+          Syntax.Add (e1, acc)
+        )
+        (Syntax.Int 0)
+        (UtilList.repeat e1 i)
+      in
+      g env replaced_syntax
+    | _ -> unexpected_type ()
+    end
   | Syntax.Div (e1, e2) -> D.unimplemented "Div"
   | Syntax.FAdd (e1, e2) ->
     insert_let (g env e1)
