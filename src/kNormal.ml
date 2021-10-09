@@ -88,7 +88,8 @@ let rec g env expr =
       )
     *)
     g env (Syntax.If (expr, Syntax.Bool true, Syntax.Bool false))
-  | Syntax.Neq(e1, e2) -> D.unimplemented "Neq"
+  | Syntax.Neq(e1, e2) ->
+    g env (Syntax.Not (Syntax.Eq (e1, e2)))
   | Syntax.Le (e1, e2) ->
     g env (Syntax.If (expr, Syntax.Bool true, Syntax.Bool false))
   | Syntax.Ge (e1, e2) -> D.unimplemented "Ge"
