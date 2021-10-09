@@ -7,6 +7,9 @@ let occur_check_error t1 t2 = raise (OccurCheckError (t1, t2))
 exception NotEqualType of Type.t * Type.t
 let not_equal_type t1 t2 = raise (NotEqualType (t1, t2))
 
+exception NotFoundInTypeEnv
+let not_found_in_type_env () = raise NotFoundInTypeEnv
+
 let () =
   Printexc.register_printer
     (function

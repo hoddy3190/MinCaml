@@ -38,7 +38,11 @@ let insert_let (k_normal_e, t) k =
 (* 変数の型環境envとK正規化前の式とを受け取り、K正規化後の式とその型とを組にして返す *)
 let rec g env expr =
   match expr with
-  | Syntax.Ident s -> D.unimplemented "Ident"
+  | Syntax.Ident s ->
+    if M.mem s env then
+        Var s, M.find s env
+    else
+        not_found_in_type_env ()
   | Syntax.Int i -> Int i, Type.Int
   | Syntax.Float f -> Float f, Type.Float
   | Syntax.Bool b -> Int (if b then 1 else 0), Type.Int (* K正規化のついで *)
