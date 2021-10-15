@@ -5,9 +5,9 @@ open KNormal
  *)
 let g env e =
   match e with
-  | Unit -> D.unimplemented "Unit"
-  | Int i -> D.unimplemented "Int"
-  | Float f -> D.unimplemented "Float"
+  | Unit -> Unit
+  | Int i -> Int i
+  | Float f -> Float f
   | Neg s -> D.unimplemented "Neg"
   | Add (s1, s2) -> D.unimplemented "Add"
   | Sub (s1, s2) -> D.unimplemented "Sub"
