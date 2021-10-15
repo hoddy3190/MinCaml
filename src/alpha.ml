@@ -7,8 +7,9 @@ let find x env =
 
 (*  env: 変換前の変数名から変換後の変数名への写像
     e: k正規化後の式
+    α変換後の式を返す
  *)
-let g env e =
+let rec g env e =
   match e with
   | Unit -> Unit
   | Int i -> Int i
@@ -21,8 +22,8 @@ let g env e =
   | FSub (s1, s2) -> FSub (find s1 env, find s2 env)
   | FMul (s1, s2) -> FMul (find s1 env, find s2 env)
   | FDiv (s1, s2) -> FDiv (find s1 env, find s2 env)
-  | IfEq (s1, s2, e1, e2) -> D.unimplemented "IfEq"
-  | IfLE (s1, s2, e1, e2) -> D.unimplemented "IfLE"
+  | IfEq (s1, s2, e1, e2) -> IfEq (find s1 env, find s2 env, g env e1, g env e2)
+  | IfLE (s1, s2, e1, e2) -> IfLE (find s1 env, find s2 env, g env e1, g env e2)
   | Let ((s1, t1), e1, e2) -> D.unimplemented "Let"
   | Var s -> Var (find s env)
   | LetRec (fundef, e) -> D.unimplemented "LetRec"
