@@ -23,7 +23,11 @@ let rec g env e =
   | FDiv (s1, s2) -> FDiv (find s1 env, find s2 env)
   | IfEq (s1, s2, e1, e2) -> IfEq (find s1 env, find s2 env, g env e1, g env e2)
   | IfLE (s1, s2, e1, e2) -> IfLE (find s1 env, find s2 env, g env e1, g env e2)
-  | Let ((s1, t1), e1, e2) -> D.unimplemented "Let"
+  | Let ((s1, t1), e1, e2) ->
+    begin [@warning "-4"] match g env e1 with
+    | Var s1' -> g (M.add s1 s1' env) e2
+    | e1' -> let e2' = g env e2 in Let ((s1, t1), e1', e2')
+    end
   | Var s -> Var (find s env)
   | LetRec (fundef, e) -> D.unimplemented "LetRec"
   | App (s, s_list) -> D.unimplemented "App"
