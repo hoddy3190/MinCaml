@@ -29,5 +29,6 @@ let rec g env e =
     | e1' -> let e2' = g env e2 in Let ((s1, t1), e1', e2')
     end
   | Var s -> Var (find s env)
-  | LetRec (fundef, e) -> D.unimplemented "LetRec"
-  | App (s, s_list) -> D.unimplemented "App"
+  | LetRec ({ name = xt; args = yts; body = e1 }, e2) ->
+    LetRec({ name = xt; args = yts; body = g env e1 }, g env e2)
+  | App (s, s_list) -> App (find s env, List.map (fun s -> find s env) s_list)
