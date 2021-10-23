@@ -9,17 +9,17 @@ open KNormal
 
 let rec f e =
   match e with
-  | Unit -> D.unimplemented "Unit"
-  | Int i -> D.unimplemented "Int"
-  | Float f -> D.unimplemented "Float"
-  | Neg s -> D.unimplemented "Neg"
-  | Add (s1, s2) -> D.unimplemented "Add"
-  | Sub (s1, s2) -> D.unimplemented "Sub"
-  | FNeg s -> D.unimplemented "FNeg"
-  | FAdd (s1, s2) -> D.unimplemented "FAdd"
-  | FSub (s1, s2) -> D.unimplemented "FSub"
-  | FMul (s1, s2) -> D.unimplemented "FMul"
-  | FDiv (s1, s2) -> D.unimplemented "FDiv"
+  | Unit -> e
+  | Int _ -> e
+  | Float _ -> e
+  | Neg _ -> e
+  | Add _ -> e
+  | Sub _ -> e
+  | FNeg _ -> e
+  | FAdd _ -> e
+  | FSub _ -> e
+  | FMul _ -> e
+  | FDiv _ -> e
   | IfEq (s1, s2, e1, e2) -> IfEq (s1, s2, f e1, f e2)
   | IfLE (s1, s2, e1, e2) -> IfLE (s1, s2, f e1, f e2)
   | Let ((s1, t1), e1, e2) ->
@@ -50,6 +50,6 @@ let rec f e =
     | e -> Let ((s1, t1), e, e2')
     in
     insert e1'
-  | Var s -> D.unimplemented "Var"
+  | Var _ -> e
   | LetRec ({ name = xt; args = yts; body = e1 }, e2) -> LetRec ({ name = xt; args = yts; body = f e1 }, f e2)
-  | App (s, s_list) -> D.unimplemented "App"
+  | App _ -> e
