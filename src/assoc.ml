@@ -20,8 +20,8 @@ let rec f e =
   | FSub (s1, s2) -> D.unimplemented "FSub"
   | FMul (s1, s2) -> D.unimplemented "FMul"
   | FDiv (s1, s2) -> D.unimplemented "FDiv"
-  | IfEq (s1, s2, e1, e2) -> D.unimplemented "IfEq"
-  | IfLE (s1, s2, e1, e2) -> D.unimplemented "IfLE"
+  | IfEq (s1, s2, e1, e2) -> IfEq (s1, s2, f e1, f e2)
+  | IfLE (s1, s2, e1, e2) -> IfLE (s1, s2, f e1, f e2)
   | Let ((s1, t1), e1, e2) ->
     (* たとえば、Let x1, (Let x2, (Let x3, e1, e2), e3), e4のとき（ただしe1, e2, e3, e4はLet式でないものとする）
        Let x3, e1, (Let x2, e2, (Let x1, e3, e4)) と返す
