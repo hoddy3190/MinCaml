@@ -51,5 +51,5 @@ let rec f e =
     in
     insert e1'
   | Var s -> D.unimplemented "Var"
-  | LetRec (fundef, e) -> D.unimplemented "LetRec"
+  | LetRec ({ name = xt; args = yts; body = e1 }, e2) -> LetRec ({ name = xt; args = yts; body = f e1 }, f e2)
   | App (s, s_list) -> D.unimplemented "App"
