@@ -61,7 +61,11 @@ let rec g env e =
     | Some (Float f1), Some (Float f2) -> if f1 <= f2 then g env e1 else g env e2
     | _ -> IfLE (s1, s2, g env e1, g env e2)
     end
-  | Let ((s1, t1), e1, e2) -> D.unimplemented "Let"
+  | Let ((s1, t1), e1, e2) ->
+    let e1' = g env e1 in
+    let updated_env = M.add s1 e1' env in
+    let e2' = g updated_env e2 in
+    Let ((s1, t1), e1', e2')
   | Var s ->
     begin [@warning "-4"] match M.find_opt s env with
     | Some v -> v (* 解答だとIntしか載っていない *)
