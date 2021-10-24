@@ -38,7 +38,13 @@ let rec f e =
   | FDiv _ -> e
   | IfEq (s1, s2, e1, e2) -> IfEq (s1, s2, f e1, f e2)
   | IfLE (s1, s2, e1, e2) -> IfLE (s1, s2, f e1, f e2)
-  | Let ((s1, t1), e1, e2) -> D.unimplemented "Let"
+  | Let ((s1, t1), e1, e2) ->
+    let e1' = f e1 in
+    let e2' = f e2 in
+    if effect e1' || S.mem s1 (fv e2) then
+      Let ((s1, t1), e1', e2')
+    else
+      e2'
   | Var _ -> e
   | LetRec ({ name = (x, t); args = yts; body = e1 }, e2) -> D.unimplemented "LetRec"
   | App _ -> e
