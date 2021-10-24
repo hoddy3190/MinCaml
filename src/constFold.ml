@@ -8,7 +8,11 @@ let rec g env e =
   | Unit -> e
   | Int _ -> e
   | Float _ -> e
-  | Neg s -> D.unimplemented "Neg"
+  | Neg s ->
+    begin [@warning "-4"] match M.find_opt s env with
+    | Some (Int i) -> Int (-i)
+    | _ -> e
+    end
   | Add (s1, s2) ->
     begin [@warning "-4"] match M.find_opt s1 env, M.find_opt s2 env with
     | Some (Int i1), Some (Int i2) -> Int(i1 + i2)
@@ -20,7 +24,11 @@ let rec g env e =
     | Some (Int i1), Some (Int i2) -> Int(i1 - i2)
     | _ -> e
     end
-  | FNeg s -> D.unimplemented "FNeg"
+  | FNeg s ->
+    begin [@warning "-4"] match M.find_opt s env with
+    | Some (Float f) -> Float (-.f)
+    | _ -> e
+    end
   | FAdd (s1, s2) ->
     begin [@warning "-4"] match M.find_opt s1 env, M.find_opt s2 env with
     | Some (Float f1), Some (Float f2) -> Float(f1 +. f2)
