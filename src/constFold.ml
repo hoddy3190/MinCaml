@@ -71,5 +71,7 @@ let rec g env e =
     | Some v -> v (* 解答だとIntしか載っていない *)
     | None -> e
     end
-  | LetRec ({ name = xt; args = yts; body = e1 }, e2) -> D.unimplemented "LetRec"
+  | LetRec ({ name = (x, t); args = yts; body = e1 }, e2) ->
+    (* 関数の中身は登録しない *)
+    LetRec ({ name = (x, t); args = yts; body = g env e1 }, g env e2)
   | App (s, s_list) -> D.unimplemented "App"
