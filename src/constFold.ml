@@ -1,7 +1,9 @@
 open KNormal
 
 (* env : 変数の名前から値への写像
-         値は整数、浮動小数、式など
+         値は整数、浮動小数、式
+         let x = e in ... はeを畳み込んだものとxをenvに登録
+         LetRecの関数の中身はenvに登録しない
  *)
 let rec g env e =
   match e with
@@ -74,4 +76,4 @@ let rec g env e =
   | LetRec ({ name = (x, t); args = yts; body = e1 }, e2) ->
     (* 関数の中身は登録しない *)
     LetRec ({ name = (x, t); args = yts; body = g env e1 }, g env e2)
-  | App (s, s_list) -> D.unimplemented "App"
+  | App _ -> e
