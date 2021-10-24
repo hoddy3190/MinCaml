@@ -52,6 +52,10 @@ let rec g env e =
   | IfEq (s1, s2, e1, e2) -> D.unimplemented "IfEq"
   | IfLE (s1, s2, e1, e2) -> D.unimplemented "IfLE"
   | Let ((s1, t1), e1, e2) -> D.unimplemented "Let"
-  | Var s -> D.unimplemented "Var"
+  | Var s ->
+    begin [@warning "-4"] match M.find_opt s env with
+    | Some v -> v (* 解答だとIntしか載っていない *)
+    | None -> e
+    end
   | LetRec ({ name = xt; args = yts; body = e1 }, e2) -> D.unimplemented "LetRec"
   | App (s, s_list) -> D.unimplemented "App"
