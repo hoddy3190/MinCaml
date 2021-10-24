@@ -49,7 +49,12 @@ let rec g env e =
     | Some (Float f1), Some (Float f2) -> Float(f1 /. f2)
     | _ -> e
     end
-  | IfEq (s1, s2, e1, e2) -> D.unimplemented "IfEq"
+  | IfEq (s1, s2, e1, e2) ->
+    begin [@warning "-4"] match M.find_opt s1 env, M.find_opt s2 env with
+    | Some (Int i1), Some (Int i2) -> if i1 = i2 then g env e1 else g env e2
+    | Some (Float f1), Some (Float f2) -> if f1 = f2 then g env e1 else g env e2
+    | _ -> IfEq (s1, s2, g env e1, g env e2)
+    end
   | IfLE (s1, s2, e1, e2) -> D.unimplemented "IfLE"
   | Let ((s1, t1), e1, e2) -> D.unimplemented "Let"
   | Var s ->
