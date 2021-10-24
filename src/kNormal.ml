@@ -36,6 +36,36 @@ let insert_let (k_normal_e, t) k =
       Let ((new_var_name, t), k_normal_e, e'), t'
     end
 
+(* 式に含まれる自由変数の集合を返す *)
+let rec fv e =
+  match e with
+  | Unit -> S.empty
+  | Int _ -> S.empty
+  | Float _ -> S.empty
+  | Neg s -> S.singleton s
+  | Add (s1, s2) -> S.of_list [s1; s2]
+  | Sub (s1, s2) -> S.of_list [s1; s2]
+  | FNeg s -> S.singleton s
+  | FAdd (s1, s2) -> S.of_list [s1; s2]
+  | FSub (s1, s2) -> S.of_list [s1; s2]
+  | FMul (s1, s2) -> S.of_list [s1; s2]
+  | FDiv (s1, s2) -> S.of_list [s1; s2]
+  | IfEq (s1, s2, e1, e2) -> S.union (S.union (S.of_list [s1; s2;]) (fv e1)) (fv e2)
+  | IfLE (s1, s2, e1, e2) -> S.union (S.union (S.of_list [s1; s2;]) (fv e1)) (fv e2)
+  | Let ((s1, t1), e1, e2) -> S.union (fv e1) (S.remove s1 (fv e2))
+  | Var s -> S.singleton s
+  | LetRec ({ name = (x, t); args = yts; body = e1 }, e2) ->
+    let e1_fv_list = List.fold_left
+      (fun acc (s, t) ->
+        S.remove s acc
+      )
+      (fv e1)
+      yts
+    in
+    S.union (S.remove x (fv e2)) e1_fv_list
+  | App (s, s_list) -> S.of_list (s :: s_list)
+
+
 (* 変数の型環境envとK正規化前の式とを受け取り、K正規化後の式とその型とを組にして返す *)
 let rec g env expr =
   match expr with
