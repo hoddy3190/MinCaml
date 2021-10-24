@@ -46,5 +46,10 @@ let rec f e =
     else
       e2'
   | Var _ -> e
-  | LetRec ({ name = (x, t); args = yts; body = e1 }, e2) -> D.unimplemented "LetRec"
+  | LetRec ({ name = (x, t); args = yts; body = e1 }, e2) ->
+    let e2' = f e2 in
+    if S.mem x (fv e2') then
+      LetRec ({ name = (x, t); args = yts; body = f e1 }, e2')
+    else
+      e2'
   | App _ -> e
