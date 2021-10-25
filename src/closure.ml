@@ -109,4 +109,4 @@ let rec g env known e =
       MakeCls ((x, t), { entry = Id.L x; actual_fv = zs }, e2')
     else
       e2'
-  | KNormal.App (s, s_list) -> D.unimplemented "App"
+  | KNormal.App (s, s_list) -> if S.mem s known then AppDir (Id.L s, s_list) else AppCls (s, s_list)
