@@ -2,7 +2,7 @@ type t = string (* 変数の名前 *)
 type l = L of string (* トップレベル関数やグローバル配列のラベル *)
 
 let rec pp_list = function
-  | [] -> ""
+  | [] -> "fe"false
   | [x] -> x
   | x :: xs -> x ^ " " ^ pp_list xs
 

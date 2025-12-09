@@ -1,0 +1,4 @@
+
+import ji
+
+print('hoge');
